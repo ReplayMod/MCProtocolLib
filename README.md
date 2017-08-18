@@ -1,15 +1,12 @@
-# MCProtocolLib
-MCProtocolLib is a simple library for communicating with a Minecraft client/server. It aims to allow people to make custom bots, clients, or servers for Minecraft easily.
+# MCProtocolLib 1.7.4 - 1.12.1
+Only **[latest](https://github.com/Steveice10/MCProtocolLib)** MCProtocolLib version **is supported**!
+If you find any problem, you need to fix it yourself..
 
-## Example Code
-See example/org/spacehq/mc/protocol/test
-
-## Building the Source
-MCProtocolLib uses Maven to manage dependencies. Simply run 'mvn clean install' in the source's directory.
-
-Builds can be downloaded **[here](https://build.spacehq.org/job/MCProtocolLib)**.
-Javadocs can be found **[here](https://build.spacehq.org/job/MCProtocolLib/javadoc)**.
-
-## License
-MCProtocolLib is licensed under the **[MIT license](http://www.opensource.org/licenses/mit-license.html)**.
-
+### **1.12.1**    [branch](https://github.com/Mareckoo01/MCProtocolLib/tree/1.12.1)  --  [compiled jar(ready to use)](https://github.com/Mareckoo01/MCProtocolLib/tree/master/compiled/1.12.1)
+### **1.12**    [branch](https://github.com/Mareckoo01/MCProtocolLib/tree/1.12)  --  [compiled jar(ready to use)](https://github.com/Mareckoo01/MCProtocolLib/tree/master/compiled/1.12)
+### **1.11**    [branch](https://github.com/Mareckoo01/MCProtocolLib/tree/1.11)  --  [compiled jar(ready to use)](https://github.com/Mareckoo01/MCProtocolLib/tree/master/compiled/1.11)
+### **1.10.2**  [branch](https://github.com/Mareckoo01/MCProtocolLib/tree/1.10.2)  --  [compiled jar(ready to use)](https://github.com/Mareckoo01/MCProtocolLib/tree/master/compiled/1.10.2)
+### **1.9**     [branch](https://github.com/Mareckoo01/MCProtocolLib/tree/1.9)  --  [compiled jar(ready to use)](https://github.com/Mareckoo01/MCProtocolLib/tree/master/compiled/1.9)
+### **1.8**     [branch](https://github.com/Mareckoo01/MCProtocolLib/tree/1.8)  --  [compiled jar(ready to use)](https://github.com/Mareckoo01/MCProtocolLib/tree/master/compiled/1.8)
+### **1.7.7**   [branch](https://github.com/Mareckoo01/MCProtocolLib/tree/1.7.7)  --  [compiled jar(ready to use)](https://github.com/Mareckoo01/MCProtocolLib/tree/master/compiled/1.7.7)
+### **1.7.4**   [branch](https://github.com/Mareckoo01/MCProtocolLib/tree/1.7.4)  --  [compiled jar(ready to use)](https://github.com/Mareckoo01/MCProtocolLib/tree/master/compiled/1.7.4)

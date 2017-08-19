@@ -1,10 +1,10 @@
 package org.spacehq.mc.protocol.data.game.values.statistic;
 
-public class UseItemStatistic implements Statistic {
+public class KilledByEntityStatistic implements Statistic {
 
     private String id;
 
-    public UseItemStatistic(String id) {
+    public KilledByEntityStatistic(String id) {
         this.id = id;
     }
 
@@ -17,7 +17,7 @@ public class UseItemStatistic implements Statistic {
         if(this == o) return true;
         if(o == null || getClass() != o.getClass()) return false;
 
-        UseItemStatistic that = (UseItemStatistic) o;
+        KilledByEntityStatistic that = (KilledByEntityStatistic) o;
 
         if(!id.equals(that.id)) return false;
 

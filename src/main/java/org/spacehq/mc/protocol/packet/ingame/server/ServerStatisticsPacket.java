@@ -6,6 +6,8 @@ import org.spacehq.mc.protocol.data.game.values.statistic.BreakBlockStatistic;
 import org.spacehq.mc.protocol.data.game.values.statistic.BreakItemStatistic;
 import org.spacehq.mc.protocol.data.game.values.statistic.CraftItemStatistic;
 import org.spacehq.mc.protocol.data.game.values.statistic.GenericStatistic;
+import org.spacehq.mc.protocol.data.game.values.statistic.KillEntityStatistic;
+import org.spacehq.mc.protocol.data.game.values.statistic.KilledByEntityStatistic;
 import org.spacehq.mc.protocol.data.game.values.statistic.Statistic;
 import org.spacehq.mc.protocol.data.game.values.statistic.UseItemStatistic;
 import org.spacehq.packetlib.io.NetInput;
@@ -18,10 +20,12 @@ import java.util.Map;
 
 public class ServerStatisticsPacket implements Packet {
 
-    private static final String CRAFT_ITEM_PREFIX = "stats.craftItem.";
-    private static final String BREAK_BLOCK_PREFIX = "stats.mineBlock.";
-    private static final String USE_ITEM_PREFIX = "stats.useItem.";
-    private static final String BREAK_ITEM_PREFIX = "stats.breakItem.";
+    private static final String CRAFT_ITEM_PREFIX = "stat.craftItem.";
+    private static final String BREAK_BLOCK_PREFIX = "stat.mineBlock.";
+    private static final String USE_ITEM_PREFIX = "stat.useItem.";
+    private static final String BREAK_ITEM_PREFIX = "stat.breakItem.";
+    private static final String KILL_ENTITY_PREFIX = "stat.killEntity.";
+    private static final String KILLED_BY_ENTITY_PREFIX = "stat.entityKilledBy.";
 
     private Map<Statistic, Integer> statistics = new HashMap<Statistic, Integer>();
 
@@ -46,13 +50,17 @@ public class ServerStatisticsPacket implements Packet {
             if(value.startsWith("achievement.")) {
                 statistic = MagicValues.key(Achievement.class, value);
             } else if(value.startsWith(CRAFT_ITEM_PREFIX)) {
-                statistic = new CraftItemStatistic(Integer.parseInt(value.substring(value.lastIndexOf(".") + 1)));
+                statistic = new CraftItemStatistic(value.substring(CRAFT_ITEM_PREFIX.length()));
             } else if(value.startsWith(BREAK_BLOCK_PREFIX)) {
-                statistic = new BreakBlockStatistic(Integer.parseInt(value.substring(value.lastIndexOf(".") + 1)));
+                statistic = new BreakBlockStatistic(value.substring(BREAK_BLOCK_PREFIX.length()));
             } else if(value.startsWith(USE_ITEM_PREFIX)) {
-                statistic = new UseItemStatistic(Integer.parseInt(value.substring(value.lastIndexOf(".") + 1)));
+                statistic = new UseItemStatistic(value.substring(USE_ITEM_PREFIX.length()));
             } else if(value.startsWith(BREAK_ITEM_PREFIX)) {
-                statistic = new BreakItemStatistic(Integer.parseInt(value.substring(value.lastIndexOf(".") + 1)));
+                statistic = new BreakItemStatistic(value.substring(BREAK_ITEM_PREFIX.length()));
+            } else if(value.startsWith(KILL_ENTITY_PREFIX)) {
+                statistic = new KillEntityStatistic(value.substring(KILL_ENTITY_PREFIX.length()));
+            } else if(value.startsWith(KILLED_BY_ENTITY_PREFIX)) {
+                statistic = new KilledByEntityStatistic(value.substring(KILLED_BY_ENTITY_PREFIX.length()));
             } else {
                 statistic = MagicValues.key(GenericStatistic.class, value);
             }
@@ -71,11 +79,15 @@ public class ServerStatisticsPacket implements Packet {
             } else if(statistic instanceof CraftItemStatistic) {
                 value = CRAFT_ITEM_PREFIX + ((CraftItemStatistic) statistic).getId();
             } else if(statistic instanceof BreakBlockStatistic) {
-                value = BREAK_BLOCK_PREFIX + ((CraftItemStatistic) statistic).getId();
+                value = BREAK_BLOCK_PREFIX + ((BreakBlockStatistic) statistic).getId();
             } else if(statistic instanceof UseItemStatistic) {
-                value = USE_ITEM_PREFIX + ((CraftItemStatistic) statistic).getId();
+                value = USE_ITEM_PREFIX + ((UseItemStatistic) statistic).getId();
             } else if(statistic instanceof BreakItemStatistic) {
-                value = BREAK_ITEM_PREFIX + ((CraftItemStatistic) statistic).getId();
+                value = BREAK_ITEM_PREFIX + ((BreakItemStatistic) statistic).getId();
+            } else if(statistic instanceof KillEntityStatistic) {
+                value = KILL_ENTITY_PREFIX + ((KillEntityStatistic) statistic).getId();
+            } else if(statistic instanceof KilledByEntityStatistic) {
+                value = KILLED_BY_ENTITY_PREFIX + ((KilledByEntityStatistic) statistic).getId();
             } else if(statistic instanceof GenericStatistic) {
                 value = MagicValues.value(String.class, (GenericStatistic) statistic);
             }

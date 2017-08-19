@@ -2,13 +2,13 @@ package org.spacehq.mc.protocol.data.game.statistic;
 
 public class BreakItemStatistic implements Statistic {
 
-    private int id;
+    private String id;
 
-    public BreakItemStatistic(int id) {
+    public BreakItemStatistic(String id) {
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -19,14 +19,14 @@ public class BreakItemStatistic implements Statistic {
 
         BreakItemStatistic that = (BreakItemStatistic) o;
 
-        if(id != that.id) return false;
+        if(!id.equals(that.id)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return id.hashCode();
     }
 
 }

@@ -1,10 +1,10 @@
 package org.spacehq.mc.protocol.data.game.statistic;
 
-public class UseItemStatistic implements Statistic {
+public class PickupItemStatistic implements Statistic {
 
     private String id;
 
-    public UseItemStatistic(String id) {
+    public PickupItemStatistic(String id) {
         this.id = id;
     }
 
@@ -17,7 +17,7 @@ public class UseItemStatistic implements Statistic {
         if(this == o) return true;
         if(o == null || getClass() != o.getClass()) return false;
 
-        UseItemStatistic that = (UseItemStatistic) o;
+        PickupItemStatistic that = (PickupItemStatistic) o;
 
         if(!id.equals(that.id)) return false;
 

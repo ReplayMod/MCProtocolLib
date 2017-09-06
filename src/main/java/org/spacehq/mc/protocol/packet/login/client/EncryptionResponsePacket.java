@@ -1,15 +1,14 @@
 package org.spacehq.mc.protocol.packet.login.client;
 
-import java.io.IOException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-
-import javax.crypto.SecretKey;
-
 import org.spacehq.mc.protocol.util.CryptUtil;
 import org.spacehq.packetlib.io.NetInput;
 import org.spacehq.packetlib.io.NetOutput;
 import org.spacehq.packetlib.packet.Packet;
+
+import javax.crypto.SecretKey;
+import java.io.IOException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 public class EncryptionResponsePacket implements Packet {
 	
@@ -35,14 +34,16 @@ public class EncryptionResponsePacket implements Packet {
 
 	@Override
 	public void read(NetInput in) throws IOException {
-		this.sharedKey = in.readPrefixedBytes();
-		this.verifyToken = in.readPrefixedBytes();
+		this.sharedKey = in.readBytes(in.readShort());
+		this.verifyToken = in.readBytes(in.readShort());
 	}
 
 	@Override
 	public void write(NetOutput out) throws IOException {
-		out.writePrefixedBytes(this.sharedKey);
-		out.writePrefixedBytes(this.verifyToken);
+        out.writeShort(this.sharedKey.length);
+		out.writeBytes(this.sharedKey);
+		out.writeShort(this.verifyToken.length);
+		out.writeBytes(this.verifyToken);
 	}
 	
 	@Override

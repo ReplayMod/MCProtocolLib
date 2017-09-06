@@ -1,7 +1,7 @@
 package org.spacehq.mc.protocol.packet.ingame.server.entity.spawn;
 
-import org.spacehq.mc.auth.GameProfile;
-import org.spacehq.mc.auth.properties.Property;
+import org.spacehq.mc.auth.data.GameProfile;
+import org.spacehq.mc.auth.data.GameProfile.Property;
 import org.spacehq.mc.protocol.data.game.EntityMetadata;
 import org.spacehq.mc.protocol.util.NetUtil;
 import org.spacehq.packetlib.io.NetInput;
@@ -83,7 +83,7 @@ public class ServerSpawnPlayerPacket implements Packet {
 			String name = in.readString();
 			String value = in.readString();
 			String signature = in.readString();
-			this.profile.getProperties().put(name, new Property(name, value, signature));
+			this.profile.getProperties().add(new Property(name, value, signature));
 		}
 
 		this.x = in.readInt() / 32D;
@@ -101,7 +101,7 @@ public class ServerSpawnPlayerPacket implements Packet {
 		out.writeString(this.profile.getIdAsString());
 		out.writeString(this.profile.getName());
 		out.writeVarInt(this.profile.getProperties().size());
-		for(Property property : this.profile.getProperties().values()) {
+		for(Property property : this.profile.getProperties()) {
 			out.writeString(property.getName());
 			out.writeString(property.getValue());
 			out.writeString(property.getSignature());

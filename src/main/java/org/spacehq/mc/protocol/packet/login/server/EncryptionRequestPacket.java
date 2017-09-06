@@ -1,12 +1,12 @@
 package org.spacehq.mc.protocol.packet.login.server;
 
-import java.io.IOException;
-import java.security.PublicKey;
-
 import org.spacehq.mc.protocol.util.CryptUtil;
 import org.spacehq.packetlib.io.NetInput;
 import org.spacehq.packetlib.io.NetOutput;
 import org.spacehq.packetlib.packet.Packet;
+
+import java.io.IOException;
+import java.security.PublicKey;
 
 public class EncryptionRequestPacket implements Packet {
 	
@@ -39,15 +39,18 @@ public class EncryptionRequestPacket implements Packet {
 	@Override
 	public void read(NetInput in) throws IOException {
 		this.serverId = in.readString();
-		this.publicKey = CryptUtil.decodePublicKey(in.readPrefixedBytes());
-		this.verifyToken = in.readPrefixedBytes();
+		this.publicKey = CryptUtil.decodePublicKey(in.readBytes(in.readShort()));
+		this.verifyToken = in.readBytes(in.readShort());
 	}
 
 	@Override
 	public void write(NetOutput out) throws IOException {
 		out.writeString(this.serverId);
-		out.writePrefixedBytes(this.publicKey.getEncoded());
-		out.writePrefixedBytes(this.verifyToken);
+		byte[] encodedKey = this.publicKey.getEncoded();
+		out.writeShort(encodedKey.length);
+		out.writeBytes(encodedKey);
+		out.writeShort(this.verifyToken.length);
+		out.writeBytes(this.verifyToken);
 	}
 	
 	@Override

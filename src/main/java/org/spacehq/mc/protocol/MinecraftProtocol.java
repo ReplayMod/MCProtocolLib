@@ -1,8 +1,8 @@
 package org.spacehq.mc.protocol;
 
-import org.spacehq.mc.auth.GameProfile;
-import org.spacehq.mc.auth.UserAuthentication;
-import org.spacehq.mc.auth.exception.AuthenticationException;
+import org.spacehq.mc.auth.data.GameProfile;
+import org.spacehq.mc.auth.exception.request.RequestException;
+import org.spacehq.mc.auth.service.AuthenticationService;
 import org.spacehq.mc.protocol.packet.handshake.client.HandshakePacket;
 import org.spacehq.mc.protocol.packet.ingame.client.*;
 import org.spacehq.mc.protocol.packet.ingame.client.player.*;
@@ -72,10 +72,10 @@ public class MinecraftProtocol extends PacketProtocol {
 		this.profile = new GameProfile((UUID) null, username);
 	}
 
-	public MinecraftProtocol(String username, String using, boolean token) throws AuthenticationException {
+	public MinecraftProtocol(String username, String using, boolean token) throws RequestException {
 		this(ProtocolMode.LOGIN);
 		String clientToken = UUID.randomUUID().toString();
-		UserAuthentication auth = new UserAuthentication(clientToken);
+		AuthenticationService auth = new AuthenticationService(clientToken);
 		auth.setUsername(username);
 		if(token) {
 			auth.setAccessToken(using);
@@ -104,13 +104,8 @@ public class MinecraftProtocol extends PacketProtocol {
 	}
 
 	@Override
-	public boolean needsPacketSizer() {
-		return true;
-	}
-
-	@Override
-	public boolean needsPacketEncryptor() {
-		return true;
+	public String getSRVRecordPrefix() {
+		return "_minecraft";
 	}
 
 	@Override

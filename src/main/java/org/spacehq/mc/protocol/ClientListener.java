@@ -1,10 +1,10 @@
 package org.spacehq.mc.protocol;
 
-import org.spacehq.mc.auth.GameProfile;
-import org.spacehq.mc.auth.SessionService;
-import org.spacehq.mc.auth.exception.AuthenticationException;
-import org.spacehq.mc.auth.exception.AuthenticationUnavailableException;
-import org.spacehq.mc.auth.exception.InvalidCredentialsException;
+import org.spacehq.mc.auth.data.GameProfile;
+import org.spacehq.mc.auth.exception.request.InvalidCredentialsException;
+import org.spacehq.mc.auth.exception.request.RequestException;
+import org.spacehq.mc.auth.exception.request.ServiceUnavailableException;
+import org.spacehq.mc.auth.service.SessionService;
 import org.spacehq.mc.protocol.data.status.ServerStatusInfo;
 import org.spacehq.mc.protocol.data.status.handler.ServerInfoHandler;
 import org.spacehq.mc.protocol.data.status.handler.ServerPingTimeHandler;
@@ -47,13 +47,13 @@ public class ClientListener extends SessionAdapter {
 				String accessToken = event.getSession().getFlag(ProtocolConstants.ACCESS_TOKEN_KEY);
 				try {
 					new SessionService().joinServer(profile, accessToken, serverHash);
-				} catch(AuthenticationUnavailableException e) {
+				} catch(ServiceUnavailableException e) {
 					event.getSession().disconnect("Login failed: Authentication service unavailable.");
 					return;
 				} catch(InvalidCredentialsException e) {
 					event.getSession().disconnect("Login failed: Invalid login session.");
 					return;
-				} catch(AuthenticationException e) {
+				} catch(RequestException e) {
 					event.getSession().disconnect("Login failed: Authentication error: " + e.getMessage());
 					return;
 				}

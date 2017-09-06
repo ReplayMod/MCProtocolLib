@@ -1,8 +1,8 @@
 package org.spacehq.mc.protocol;
 
-import org.spacehq.mc.auth.GameProfile;
-import org.spacehq.mc.auth.SessionService;
-import org.spacehq.mc.auth.exception.AuthenticationUnavailableException;
+import org.spacehq.mc.auth.data.GameProfile;
+import org.spacehq.mc.auth.exception.request.RequestException;
+import org.spacehq.mc.auth.service.SessionService;
 import org.spacehq.mc.protocol.data.status.ServerStatusInfo;
 import org.spacehq.mc.protocol.data.status.handler.ServerInfoBuilder;
 import org.spacehq.mc.protocol.packet.handshake.client.HandshakePacket;
@@ -159,7 +159,7 @@ public class ServerListener extends SessionAdapter {
 			try {
 				String serverHash = new BigInteger(CryptUtil.getServerIdHash(serverId, pair.getPublic(), this.key)).toString(16);
 				SessionService service = new SessionService();
-				GameProfile profile = service.hasJoinedServer(new GameProfile((UUID) null, username), serverHash);
+				GameProfile profile = service.getProfileByServer(username, serverHash);
 				if(profile != null) {
 					this.session.send(new LoginSuccessPacket(profile));
 					this.session.setFlag(ProtocolConstants.PROFILE_KEY, profile);
@@ -173,7 +173,7 @@ public class ServerListener extends SessionAdapter {
 				} else {
 					this.session.disconnect("Failed to verify username!");
 				}
-			} catch(AuthenticationUnavailableException e) {
+			} catch(RequestException e) {
 				this.session.disconnect("Authentication servers are down. Please try again later, sorry!");
 			}
 		}

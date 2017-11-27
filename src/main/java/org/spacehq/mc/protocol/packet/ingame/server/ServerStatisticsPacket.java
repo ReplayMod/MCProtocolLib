@@ -5,6 +5,7 @@ import org.spacehq.mc.protocol.data.game.values.statistic.Achievement;
 import org.spacehq.mc.protocol.data.game.values.statistic.BreakBlockStatistic;
 import org.spacehq.mc.protocol.data.game.values.statistic.BreakItemStatistic;
 import org.spacehq.mc.protocol.data.game.values.statistic.CraftItemStatistic;
+import org.spacehq.mc.protocol.data.game.values.statistic.CustomStatistic;
 import org.spacehq.mc.protocol.data.game.values.statistic.GenericStatistic;
 import org.spacehq.mc.protocol.data.game.values.statistic.KillEntityStatistic;
 import org.spacehq.mc.protocol.data.game.values.statistic.KilledByEntityStatistic;
@@ -62,7 +63,11 @@ public class ServerStatisticsPacket implements Packet {
             } else if(value.startsWith(KILLED_BY_ENTITY_PREFIX)) {
                 statistic = new KilledByEntityStatistic(value.substring(KILLED_BY_ENTITY_PREFIX.length()));
             } else {
-                statistic = MagicValues.key(GenericStatistic.class, value);
+                try {
+                    statistic = MagicValues.key(GenericStatistic.class, value);
+                } catch(IllegalArgumentException e) {
+                    statistic = new CustomStatistic(value);
+                }
             }
 
             this.statistics.put(statistic, in.readVarInt());

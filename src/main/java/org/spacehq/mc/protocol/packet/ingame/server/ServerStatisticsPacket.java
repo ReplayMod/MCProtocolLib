@@ -5,6 +5,7 @@ import org.spacehq.mc.protocol.data.game.statistic.Achievement;
 import org.spacehq.mc.protocol.data.game.statistic.BreakBlockStatistic;
 import org.spacehq.mc.protocol.data.game.statistic.BreakItemStatistic;
 import org.spacehq.mc.protocol.data.game.statistic.CraftItemStatistic;
+import org.spacehq.mc.protocol.data.game.statistic.CustomStatistic;
 import org.spacehq.mc.protocol.data.game.statistic.GenericStatistic;
 import org.spacehq.mc.protocol.data.game.statistic.DropItemStatistic;
 import org.spacehq.mc.protocol.data.game.statistic.PickupItemStatistic;
@@ -71,7 +72,11 @@ public class ServerStatisticsPacket implements Packet {
             } else if(value.startsWith(PICKUP_ITEM_PREFIX)) {
                 statistic = new PickupItemStatistic(value.substring(PICKUP_ITEM_PREFIX.length()));
             } else {
-                statistic = MagicValues.key(GenericStatistic.class, value);
+                try {
+                    statistic = MagicValues.key(GenericStatistic.class, value);
+                } catch(IllegalArgumentException e) {
+                    statistic = new CustomStatistic(value);
+                }
             }
 
             this.statistics.put(statistic, in.readVarInt());

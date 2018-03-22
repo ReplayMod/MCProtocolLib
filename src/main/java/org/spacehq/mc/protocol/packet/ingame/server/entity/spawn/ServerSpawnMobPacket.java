@@ -12,6 +12,7 @@ public class ServerSpawnMobPacket implements Packet {
 	
 	private int entityId;
 	private Type type;
+	private byte unknownTypeId;
 	private double x;
 	private double y;
 	private double z;
@@ -26,7 +27,12 @@ public class ServerSpawnMobPacket implements Packet {
 	@SuppressWarnings("unused")
 	private ServerSpawnMobPacket() {
 	}
-	
+
+	public ServerSpawnMobPacket(int entityId, byte type, double x, double y, double z, float yaw, float pitch, float headYaw, double motX, double motY, double motZ, EntityMetadata metadata[]) {
+	    this(entityId, Type.UNKNOWN, x, y, z, yaw, pitch, headYaw, motX, motY, motZ, metadata);
+	    this.unknownTypeId = type;
+    }
+
 	public ServerSpawnMobPacket(int entityId, Type type, double x, double y, double z, float yaw, float pitch, float headYaw, double motX, double motY, double motZ, EntityMetadata metadata[]) {
 		this.entityId = entityId;
 		this.type = type;
@@ -48,6 +54,14 @@ public class ServerSpawnMobPacket implements Packet {
 	
 	public Type getType() {
 		return this.type;
+	}
+
+	public byte getTypeId() {
+		try {
+			return typeToId(this.type);
+		} catch (IOException e) {
+		    throw new RuntimeException(e);
+		}
 	}
 	
 	public double getX() {
@@ -93,7 +107,8 @@ public class ServerSpawnMobPacket implements Packet {
 	@Override
 	public void read(NetInput in) throws IOException {
 		this.entityId = in.readVarInt();
-		this.type = idToType(in.readByte());
+		this.unknownTypeId = in.readByte();
+		this.type = idToType(this.unknownTypeId);
 		this.x = in.readInt() / 32D;
 		this.y = in.readInt() / 32D;
 		this.z = in.readInt() / 32D;
@@ -127,7 +142,7 @@ public class ServerSpawnMobPacket implements Packet {
 		return false;
 	}
 	
-	private static Type idToType(byte id) throws IOException {
+	private Type idToType(byte id) throws IOException {
 		switch(id) {
 			case 50:
 				return Type.CREEPER;
@@ -188,11 +203,11 @@ public class ServerSpawnMobPacket implements Packet {
 			case 120:
 				return Type.VILLAGER;
 			default:
-				throw new IOException("Unknown mob type id: " + id);
+			    return Type.UNKNOWN;
 		}
 	}
 	
-	private static byte typeToId(Type type) throws IOException {
+	private byte typeToId(Type type) throws IOException {
 		switch(type) {
 			case CREEPER:
 				return 50;
@@ -252,6 +267,8 @@ public class ServerSpawnMobPacket implements Packet {
 				return 100;
 			case VILLAGER:
 				return 120;
+			case UNKNOWN:
+				return unknownTypeId;
 			default:
 				throw new IOException("Unmapped mob type: " + type);
 		}
@@ -286,7 +303,8 @@ public class ServerSpawnMobPacket implements Packet {
 		OCELOT,
 		IRON_GOLEM,
 		HORSE,
-		VILLAGER;
+		VILLAGER,
+		UNKNOWN;
 	}
 
 }

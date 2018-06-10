@@ -12,6 +12,7 @@ public class ServerEntityRemoveEffectPacket implements Packet {
 
     private int entityId;
     private Effect effect;
+    private byte effectId;
 
     @SuppressWarnings("unused")
     private ServerEntityRemoveEffectPacket() {
@@ -22,6 +23,11 @@ public class ServerEntityRemoveEffectPacket implements Packet {
         this.effect = effect;
     }
 
+    public ServerEntityRemoveEffectPacket(int entityId, byte effectId) {
+        this.entityId = entityId;
+        this.effectId = effectId;
+    }
+
     public int getEntityId() {
         return this.entityId;
     }
@@ -30,16 +36,25 @@ public class ServerEntityRemoveEffectPacket implements Packet {
         return this.effect;
     }
 
+    public byte getEffectId() {
+        return this.effect == null ? this.effectId : MagicValues.value(Integer.class, this.effect).byteValue();
+    }
+
     @Override
     public void read(NetInput in) throws IOException {
         this.entityId = in.readVarInt();
-        this.effect = MagicValues.key(Effect.class, in.readByte());
+        this.effectId = in.readByte();
+        try {
+            this.effect = MagicValues.key(Effect.class, this.effectId);
+        } catch (IllegalArgumentException e) {
+            this.effect = null;
+        }
     }
 
     @Override
     public void write(NetOutput out) throws IOException {
         out.writeVarInt(this.entityId);
-        out.writeByte(MagicValues.value(Integer.class, this.effect));
+        out.writeByte(this.getEffectId());
     }
 
     @Override

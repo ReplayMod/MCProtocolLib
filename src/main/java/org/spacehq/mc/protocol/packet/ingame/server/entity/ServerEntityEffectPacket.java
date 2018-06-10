@@ -13,6 +13,7 @@ public class ServerEntityEffectPacket implements Packet {
 
     private int entityId;
     private Effect effect;
+    private byte effectId;
     private int amplifier;
     private int duration;
     private boolean ambient;
@@ -31,12 +32,25 @@ public class ServerEntityEffectPacket implements Packet {
         this.showParticles = showParticles;
     }
 
+    public ServerEntityEffectPacket(int entityId, byte effectId, int amplifier, int duration, boolean ambient, boolean showParticles) {
+        this.entityId = entityId;
+        this.effectId = effectId;
+        this.amplifier = amplifier;
+        this.duration = duration;
+        this.ambient = ambient;
+        this.showParticles = showParticles;
+    }
+
     public int getEntityId() {
         return this.entityId;
     }
 
     public Effect getEffect() {
         return this.effect;
+    }
+
+    public byte getEffectId() {
+        return this.effect == null ? this.effectId : MagicValues.value(Integer.class, this.effect).byteValue();
     }
 
     public int getAmplifier() {
@@ -58,7 +72,12 @@ public class ServerEntityEffectPacket implements Packet {
     @Override
     public void read(NetInput in) throws IOException {
         this.entityId = in.readVarInt();
-        this.effect = MagicValues.key(Effect.class, in.readByte());
+        this.effectId = in.readByte();
+        try {
+            this.effect = MagicValues.key(Effect.class, this.effectId);
+        } catch (IllegalArgumentException e) {
+            this.effect = null;
+        }
         this.amplifier = in.readByte();
         this.duration = in.readVarInt();
 
@@ -70,7 +89,7 @@ public class ServerEntityEffectPacket implements Packet {
     @Override
     public void write(NetOutput out) throws IOException {
         out.writeVarInt(this.entityId);
-        out.writeByte(MagicValues.value(Integer.class, this.effect));
+        out.writeByte(this.getEffectId());
         out.writeByte(this.amplifier);
         out.writeVarInt(this.duration);
 

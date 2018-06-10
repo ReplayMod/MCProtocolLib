@@ -10,16 +10,24 @@ public class ServerEntityEffectPacket implements Packet {
 	
 	private int entityId;
 	private Effect effect;
+	private byte effectId;
 	private int amplifier;
 	private int duration;
 	
 	@SuppressWarnings("unused")
 	private ServerEntityEffectPacket() {
 	}
-	
+
 	public ServerEntityEffectPacket(int entityId, Effect effect, int amplifier, int duration) {
 		this.entityId = entityId;
 		this.effect = effect;
+		this.amplifier = amplifier;
+		this.duration = duration;
+	}
+
+	public ServerEntityEffectPacket(int entityId, byte effectId, int amplifier, int duration) {
+		this.entityId = entityId;
+		this.effectId = effectId;
 		this.amplifier = amplifier;
 		this.duration = duration;
 	}
@@ -31,7 +39,11 @@ public class ServerEntityEffectPacket implements Packet {
 	public Effect getEffect() {
 		return this.effect;
 	}
-	
+
+	public byte getEffectId() {
+		return this.effect == null ? this.effectId : (byte) (this.effect.ordinal() + 1);
+	}
+
 	public int getAmplifier() {
 		return this.amplifier;
 	}
@@ -43,7 +55,10 @@ public class ServerEntityEffectPacket implements Packet {
 	@Override
 	public void read(NetInput in) throws IOException {
 		this.entityId = in.readInt();
-		this.effect = Effect.values()[in.readByte() - 1];
+		this.effectId = in.readByte();
+		if (this.effectId > 0 && this.effectId <= Effect.values().length) {
+			this.effect = Effect.values()[this.effectId - 1];
+		}
 		this.amplifier = in.readByte();
 		this.duration = in.readShort();
 	}
@@ -51,7 +66,7 @@ public class ServerEntityEffectPacket implements Packet {
 	@Override
 	public void write(NetOutput out) throws IOException {
 		out.writeInt(this.entityId);
-		out.writeByte(this.effect.ordinal() + 1);
+		out.writeByte(this.getEffectId());
 		out.writeByte(this.amplifier);
 		out.writeShort(this.duration);
 	}

@@ -309,6 +309,7 @@ public class MagicValues {
 
         register(GlobalEntityType.LIGHTNING_BOLT, 1);
 
+        register(MobType.UNKNOWN, -1);
         register(MobType.ELDER_GUARDIAN, 4);
         register(MobType.WITHER_SKELETON, 5);
         register(MobType.STRAY, 6);

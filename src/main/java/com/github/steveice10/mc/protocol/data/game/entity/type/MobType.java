@@ -1,6 +1,7 @@
 package com.github.steveice10.mc.protocol.data.game.entity.type;
 
 public enum MobType {
+    UNKNOWN,
     ELDER_GUARDIAN,
     WITHER_SKELETON,
     STRAY,

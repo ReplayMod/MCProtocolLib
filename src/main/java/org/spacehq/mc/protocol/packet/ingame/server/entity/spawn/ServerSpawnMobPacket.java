@@ -104,7 +104,11 @@ public class ServerSpawnMobPacket implements Packet {
     public void read(NetInput in) throws IOException {
         this.entityId = in.readVarInt();
         this.uuid = in.readUUID();
-        this.type = MagicValues.key(MobType.class, in.readUnsignedByte());
+        try {
+            this.type = MagicValues.key(MobType.class, in.readUnsignedByte());
+        } catch (IllegalArgumentException e) {
+            this.type = MobType.UNKNOWN;
+        }
         this.x = in.readDouble();
         this.y = in.readDouble();
         this.z = in.readDouble();

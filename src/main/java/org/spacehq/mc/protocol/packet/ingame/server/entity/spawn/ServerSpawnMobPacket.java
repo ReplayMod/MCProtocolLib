@@ -95,7 +95,11 @@ public class ServerSpawnMobPacket implements Packet {
     @Override
     public void read(NetInput in) throws IOException {
         this.entityId = in.readVarInt();
-        this.type = MagicValues.key(MobType.class, in.readByte());
+        try {
+            this.type = MagicValues.key(MobType.class, in.readByte());
+        } catch (IllegalArgumentException e) {
+            this.type = MobType.UNKNOWN;
+        }
         this.x = in.readInt() / 32D;
         this.y = in.readInt() / 32D;
         this.z = in.readInt() / 32D;

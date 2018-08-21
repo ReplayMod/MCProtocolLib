@@ -1,7 +1,7 @@
 package org.spacehq.mc.protocol.data.game.values.entity;
 
 public enum MobType {
-
+    UNKNOWN,
     ARMOR_STAND,
     CREEPER,
     SKELETON,

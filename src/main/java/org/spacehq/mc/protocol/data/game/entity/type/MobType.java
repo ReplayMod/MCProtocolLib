@@ -1,6 +1,7 @@
 package org.spacehq.mc.protocol.data.game.entity.type;
 
 public enum MobType {
+    UNKNOWN,
     ARMOR_STAND,
     MOB,
     MONSTER,

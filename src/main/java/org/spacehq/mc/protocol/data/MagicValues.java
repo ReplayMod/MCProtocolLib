@@ -306,6 +306,7 @@ public class MagicValues {
 
         register(GlobalEntityType.LIGHTNING_BOLT, 1);
 
+        register(MobType.UNKNOWN, -1);
         register(MobType.ARMOR_STAND, 30);
         register(MobType.MOB, 48);
         register(MobType.MONSTER, 49);

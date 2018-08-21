@@ -102,7 +102,11 @@ public class ServerSpawnMobPacket extends MinecraftPacket {
     public void read(NetInput in) throws IOException {
         this.entityId = in.readVarInt();
         this.uuid = in.readUUID();
-        this.type = MagicValues.key(MobType.class, in.readVarInt());
+        try {
+            this.type = MagicValues.key(MobType.class, in.readVarInt());
+        } catch (IllegalArgumentException e) {
+            this.type = MobType.UNKNOWN;
+        }
         this.x = in.readDouble();
         this.y = in.readDouble();
         this.z = in.readDouble();

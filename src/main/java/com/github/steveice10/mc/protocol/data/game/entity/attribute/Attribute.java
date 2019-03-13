@@ -8,6 +8,7 @@ import java.util.Objects;
 
 public class Attribute {
     private AttributeType type;
+    private String customType;
     private double value;
     private List<AttributeModifier> modifiers;
 
@@ -25,8 +26,18 @@ public class Attribute {
         this.modifiers = modifiers;
     }
 
+    public Attribute(String customType, double value, List<AttributeModifier> modifiers) {
+        this.customType = customType;
+        this.value = value;
+        this.modifiers = modifiers;
+    }
+
     public AttributeType getType() {
         return this.type;
+    }
+
+    public String getCustomType() {
+        return this.customType;
     }
 
     public double getValue() {
@@ -44,13 +55,14 @@ public class Attribute {
 
         Attribute that = (Attribute) o;
         return this.type == that.type &&
+                Objects.equals(this.customType, that.customType) &&
                 this.value == that.value &&
                 Objects.equals(this.modifiers, that.modifiers);
     }
 
     @Override
     public int hashCode() {
-        return ObjectUtil.hashCode(this.type, this.value, this.modifiers);
+        return ObjectUtil.hashCode(this.type, this.customType, this.value, this.modifiers);
     }
 
     @Override

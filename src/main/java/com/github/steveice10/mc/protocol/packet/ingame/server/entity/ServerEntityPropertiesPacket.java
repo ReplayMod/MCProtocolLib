@@ -48,7 +48,11 @@ public class ServerEntityPropertiesPacket extends MinecraftPacket {
                 modifiers.add(new AttributeModifier(in.readUUID(), in.readDouble(), MagicValues.key(ModifierOperation.class, in.readByte())));
             }
 
-            this.attributes.add(new Attribute(MagicValues.key(AttributeType.class, key), value, modifiers));
+            try {
+                this.attributes.add(new Attribute(MagicValues.key(AttributeType.class, key), value, modifiers));
+            } catch (IllegalArgumentException e) {
+                this.attributes.add(new Attribute(key, value, modifiers));
+            }
         }
     }
 
@@ -57,7 +61,11 @@ public class ServerEntityPropertiesPacket extends MinecraftPacket {
         out.writeVarInt(this.entityId);
         out.writeInt(this.attributes.size());
         for(Attribute attribute : this.attributes) {
-            out.writeString(MagicValues.value(String.class, attribute.getType()));
+            if (attribute.getType() != null) {
+                out.writeString(MagicValues.value(String.class, attribute.getType()));
+            } else {
+                out.writeString(attribute.getCustomType());
+            }
             out.writeDouble(attribute.getValue());
             out.writeVarInt(attribute.getModifiers().size());
             for(AttributeModifier modifier : attribute.getModifiers()) {

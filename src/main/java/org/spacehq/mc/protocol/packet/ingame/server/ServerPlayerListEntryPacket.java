@@ -86,6 +86,7 @@ public class ServerPlayerListEntryPacket implements Packet {
                     }
 
                     entry = new PlayerListEntry(profile, disp);
+                    break;
                 case REMOVE_PLAYER:
                     entry = new PlayerListEntry(profile);
                     break;

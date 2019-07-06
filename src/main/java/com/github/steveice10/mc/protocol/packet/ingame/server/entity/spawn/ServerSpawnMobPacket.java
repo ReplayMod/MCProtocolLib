@@ -14,7 +14,7 @@ import java.util.UUID;
 public class ServerSpawnMobPacket extends MinecraftPacket {
     private int entityId;
     private UUID uuid;
-    private MobType type;
+    private int typeId;
     private double x;
     private double y;
     private double z;
@@ -31,9 +31,13 @@ public class ServerSpawnMobPacket extends MinecraftPacket {
     }
 
     public ServerSpawnMobPacket(int entityId, UUID uuid, MobType type, double x, double y, double z, float yaw, float pitch, float headYaw, double motX, double motY, double motZ, EntityMetadata metadata[]) {
+        this(entityId, uuid, MagicValues.value(Integer.class, type), x, y, z, yaw, pitch, headYaw, motX, motY, motZ, metadata);
+    }
+
+    public ServerSpawnMobPacket(int entityId, UUID uuid, int typeId, double x, double y, double z, float yaw, float pitch, float headYaw, double motX, double motY, double motZ, EntityMetadata metadata[]) {
         this.entityId = entityId;
         this.uuid = uuid;
-        this.type = type;
+        this.typeId = typeId;
         this.x = x;
         this.y = y;
         this.z = z;
@@ -54,8 +58,21 @@ public class ServerSpawnMobPacket extends MinecraftPacket {
         return this.uuid;
     }
 
+    @Deprecated
     public MobType getType() {
-        return this.type;
+        return MagicValues.key(MobType.class, this.typeId);
+    }
+
+    public MobType getVanillaType() {
+        try {
+            return MagicValues.key(MobType.class, this.typeId);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public int getTypeId() {
+        return this.typeId;
     }
 
     public double getX() {
@@ -102,7 +119,7 @@ public class ServerSpawnMobPacket extends MinecraftPacket {
     public void read(NetInput in) throws IOException {
         this.entityId = in.readVarInt();
         this.uuid = in.readUUID();
-        this.type = MagicValues.key(MobType.class, in.readVarInt());
+        this.typeId = in.readVarInt();
         this.x = in.readDouble();
         this.y = in.readDouble();
         this.z = in.readDouble();
@@ -119,7 +136,7 @@ public class ServerSpawnMobPacket extends MinecraftPacket {
     public void write(NetOutput out) throws IOException {
         out.writeVarInt(this.entityId);
         out.writeUUID(this.uuid);
-        out.writeVarInt(MagicValues.value(Integer.class, this.type));
+        out.writeVarInt(this.typeId);
         out.writeDouble(this.x);
         out.writeDouble(this.y);
         out.writeDouble(this.z);

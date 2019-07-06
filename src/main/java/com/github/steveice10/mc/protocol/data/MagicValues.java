@@ -323,6 +323,7 @@ public class MagicValues {
         register(EntityStatus.TOTEM_OF_UNDYING_MAKE_SOUND, 35);
         register(EntityStatus.LIVING_DROWN, 36);
         register(EntityStatus.LIVING_BURN, 37);
+        register(EntityStatus.DOLPHIN_HAPPY, 38);
 
         register(PositionElement.X, 0);
         register(PositionElement.Y, 1);

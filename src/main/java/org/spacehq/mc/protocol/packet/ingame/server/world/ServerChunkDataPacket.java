@@ -1,9 +1,9 @@
 package org.spacehq.mc.protocol.packet.ingame.server.world;
 
+import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import org.spacehq.mc.protocol.data.game.chunk.Column;
 import org.spacehq.mc.protocol.util.NetUtil;
 import org.spacehq.mc.protocol.util.ReflectionToString;
-import org.spacehq.opennbt.tag.builtin.CompoundTag;
 import org.spacehq.packetlib.io.NetInput;
 import org.spacehq.packetlib.io.NetOutput;
 import org.spacehq.packetlib.io.stream.StreamNetOutput;

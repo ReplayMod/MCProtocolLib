@@ -46,9 +46,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.replaymod</groupId>
+            <groupId>com.github.steveice10</groupId>
             <artifactId>OpenNBT</artifactId>
-            <version>6586a95</version>
+            <version>d50274d</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

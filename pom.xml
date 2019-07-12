@@ -40,7 +40,7 @@
         <dependency>
             <groupId>com.github.Steveice10</groupId>
             <artifactId>OpenNBT</artifactId>
-            <version>32efcec</version>
+            <version>d50274d</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

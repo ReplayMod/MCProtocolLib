@@ -1,8 +1,8 @@
 package org.spacehq.mc.protocol.util;
 
+import com.github.steveice10.opennbt.NBTIO;
+import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import org.spacehq.mc.protocol.data.game.*;
-import org.spacehq.opennbt.NBTIO;
-import org.spacehq.opennbt.tag.builtin.CompoundTag;
 import org.spacehq.packetlib.io.NetInput;
 import org.spacehq.packetlib.io.NetOutput;
 
@@ -19,7 +19,7 @@ public class NetUtil {
 		if(length < 0) {
 			return null;
 		} else {
-			return (CompoundTag) NBTIO.readTag(new DataInputStream(new GZIPInputStream(new ByteArrayInputStream(in.readBytes(length)))));
+			return (CompoundTag) NBTIO.readTag(new GZIPInputStream(new ByteArrayInputStream(in.readBytes(length))));
 		}
 	}
 	
@@ -29,7 +29,7 @@ public class NetUtil {
 		} else {
 			ByteArrayOutputStream output = new ByteArrayOutputStream();
 			GZIPOutputStream gzip = new GZIPOutputStream(output);
-			NBTIO.writeTag(new DataOutputStream(gzip), tag);
+			NBTIO.writeTag(gzip, tag);
 			gzip.close();
 			output.close();
 			byte bytes[] = output.toByteArray();

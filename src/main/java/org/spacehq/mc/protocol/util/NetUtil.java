@@ -1,10 +1,10 @@
 package org.spacehq.mc.protocol.util;
 
+import com.github.steveice10.opennbt.NBTIO;
+import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import org.spacehq.mc.protocol.data.game.*;
 import org.spacehq.mc.protocol.data.game.values.MagicValues;
 import org.spacehq.mc.protocol.data.game.values.entity.MetadataType;
-import org.spacehq.opennbt.NBTIO;
-import org.spacehq.opennbt.tag.builtin.CompoundTag;
 import org.spacehq.packetlib.io.NetInput;
 import org.spacehq.packetlib.io.NetOutput;
 
@@ -29,7 +29,7 @@ public class NetUtil {
         if(b == 0) {
             return null;
         } else {
-            return (CompoundTag) NBTIO.readTag(new DataInputStream(new NetInputStream(in, b)));
+            return (CompoundTag) NBTIO.readTag(new NetInputStream(in, b));
         }
     }
 
@@ -37,7 +37,7 @@ public class NetUtil {
         if(tag == null) {
             out.writeByte(0);
         } else {
-            NBTIO.writeTag(new DataOutputStream(new NetOutputStream(out)), tag);
+            NBTIO.writeTag(new NetOutputStream(out), tag);
         }
     }
 

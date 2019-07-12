@@ -1,10 +1,10 @@
 package org.spacehq.mc.protocol.packet.ingame.server.world;
 
+import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import org.spacehq.mc.protocol.data.game.Position;
 import org.spacehq.mc.protocol.data.game.values.MagicValues;
 import org.spacehq.mc.protocol.data.game.values.world.block.UpdatedTileType;
 import org.spacehq.mc.protocol.util.NetUtil;
-import org.spacehq.opennbt.tag.builtin.CompoundTag;
 import org.spacehq.packetlib.io.NetInput;
 import org.spacehq.packetlib.io.NetOutput;
 import org.spacehq.packetlib.packet.Packet;

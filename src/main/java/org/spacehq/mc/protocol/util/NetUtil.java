@@ -168,7 +168,7 @@ public class NetUtil {
     public static ParsedChunkData dataToChunks(NetworkChunkData data, boolean checkForSky) {
         Chunk chunks[] = new Chunk[16];
         int pos = 0;
-        int expected = 0;
+        int expected = data.isFullChunk() ? 256 : 0;
         boolean sky = false;
         ShortBuffer buf = ByteBuffer.wrap(data.getData()).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer();
         // 0 = Calculate expected length and determine if the packet has skylight.
@@ -179,8 +179,8 @@ public class NetUtil {
             for(int ind = 0; ind < 16; ind++) {
                 if((data.getMask() & 1 << ind) != 0) {
                     if(pass == 0) {
-                        // Block length + Blocklight length
-                        expected += (4096 * 2) + 2048;
+                        // Block length + Blocklight length + Skylight length
+                        expected += (4096 * 2) + 2048 + 2048;
                     }
 
                     if(pass == 1) {
@@ -207,7 +207,7 @@ public class NetUtil {
 
             if(pass == 0) {
                 // If we have more data than blocks and blocklight combined, there must be skylight data as well.
-                if(data.getData().length > expected) {
+                if(data.getData().length == expected) {
                     sky = checkForSky;
                 }
             }

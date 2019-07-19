@@ -214,7 +214,7 @@ public class NetUtil {
         }
 
         byte biomeData[] = null;
-        if(data.isFullChunk()) {
+        if(data.isFullChunk() && data.getData().length > 0) {
             biomeData = new byte[256];
             System.arraycopy(data.getData(), pos, biomeData, 0, biomeData.length);
             pos += biomeData.length;

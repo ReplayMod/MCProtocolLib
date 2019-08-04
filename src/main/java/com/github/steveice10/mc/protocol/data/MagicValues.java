@@ -731,6 +731,7 @@ public class MagicValues {
         register(SoundEffect.BLOCK_BREWING_STAND_BREW, 1035);
         register(SoundEffect.BLOCK_IRON_TRAPDOOR_CLOSE, 1036);
         register(SoundEffect.BLOCK_IRON_TRAPDOOR_OPEN, 1037);
+        register(SoundEffect.BLOCK_END_PORTAL_SPAWN, 1038);
         register(SoundEffect.ENTITY_ENDERDRAGON_GROWL, 3001);
 
         register(ParticleEffect.SMOKE, 2000);

@@ -930,7 +930,7 @@ public class MagicValues {
             }
         }
 
-        return null;
+        throw new IllegalArgumentException("Value " + value + " has no mapping for key class " + keyType.getName() + ".");
     }
 
     @SuppressWarnings("unchecked")
@@ -956,7 +956,7 @@ public class MagicValues {
             }
         }
 
-        return null;
+        throw new IllegalArgumentException("Key " + key + " has no mapping for value class " + valueType + ".");
     }
 
 }
